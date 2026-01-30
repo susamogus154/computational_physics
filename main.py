@@ -14,6 +14,9 @@ if steps < 1:
   raise Exception("""brochacho the total time has to be greater than the time
   step""")
 
+if dt < 0 and total_time:
+  raise Exception("BROTEIN SHAKE THE TIME INTERVALS HAVE TO BE POSITIVE")
+
 # initializing arrays
 t = np.linspace(0, total_time, steps)
 x = np.zeros(steps)
