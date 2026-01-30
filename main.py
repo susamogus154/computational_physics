@@ -2,9 +2,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Physical constants and variables (YOU CAN EDIT THIS!)
-dt = 0.01       # Time step (s)
+dt = 0.01  # Time step (s)
 total_time = 50.0 # Total duration (s)
+
+dt = float(input("Enter time step: "))
+total_time = float(input("Enter total time interval: "))
+
 steps = int(total_time / dt)
+
+if steps < 1:
+  raise Exception("""brochacho the total time has to be greater than the time
+  step""")
 
 # initializing arrays
 t = np.linspace(0, total_time, steps)
@@ -37,16 +45,26 @@ for i in range(1, steps):
 # finishing the solve
 zero_velocity_time = zero_velocity_index * dt
 
+
+print(f"""The first time that the object has a velocity of 0 after 0 sec is at
+t = {zero_velocity_time}s, at position {x[zero_velocity_index]:.3g}m.
+      """)
+print("\n")
+print("""By inspection, as t approaches infinity, the object's x-position
+approaches 50m""")
+
 # plotting with matplotlib (plt)
 fig, axs = plt.subplots(2, 2)
 plt.subplots_adjust(hspace=0.7, wspace=0.4)
 
-axs[0][0].plot([0, min(x.size+1, zero_velocity_index*2) * dt],
-            [x[zero_velocity_index], x[zero_velocity_index]],
-            color='red',
-            linestyle='--',
-            linewidth=1
-)
+if zero_velocity_index != -1:
+  axs[0][0].plot([0, min(x.size+1, zero_velocity_index*2) * dt],
+              [x[zero_velocity_index], x[zero_velocity_index]],
+              color='red',
+              linestyle='--',
+              linewidth=1
+  )
+
 axs[0][0].plot(
     t[:min(x.size+1, zero_velocity_index*2)],
     x[:min(x.size+1, zero_velocity_index*2)]
@@ -57,9 +75,6 @@ axs[0][0].set_xlabel("Time (s)")
 axs[0][0].set_ylabel("X-position (m)")
 axs[0][0].grid(True)
 
-print(f"""The first time that the object has a velocity of 0 after 0 sec is at
-t = {zero_velocity_time}s, at position {x[zero_velocity_index]:.3g}m.
-      """)
 
 # plot full graph of position vs time
 axs[1][0].plot(
@@ -73,13 +88,13 @@ axs[1][0].set_ylabel("X-position (m)")
 axs[1][0].grid(True)
 
 # column 2 (velocity vs time graphs)
-
-axs[0][1].plot([0, min(x.size+1, zero_velocity_index*2) * dt],
-            [v[zero_velocity_index], v[zero_velocity_index]],
-            color='red',
-            linestyle='--',
-            linewidth=1
-)
+if zero_velocity_index != -1:
+  axs[0][1].plot([0, min(x.size+1, zero_velocity_index*2) * dt],
+              [0, 0],
+              color='red',
+              linestyle='--',
+              linewidth=1
+  )
 axs[0][1].plot(
     t[:min(x.size+1, zero_velocity_index*2)],
     v[:min(x.size+1, zero_velocity_index*2)]
