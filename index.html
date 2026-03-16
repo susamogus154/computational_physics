@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Title</title>
+    <link rel="stylesheet" href="https://pyscript.net/releases/2026.3.1/core.css" />
+    <script type="module" src="https://pyscript.net/releases/2026.3.1/core.js"></script>
+</head>
+<body>
+  <h1>2D Force Simulation</h1>
+  <p>This is my first VPython Simulation, visualizing basic 2D kinematics with a net force and mass that you control with sliders.</p>
+  <p>Use shift-drag to pan around.</p>
+  <p>Scroll up or down in the simulation window to zoom.</p>
+  <div id="glowscript" class="glowscript">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link type="text/css" href="https://www.glowscript.org/css/redmond/2.1/jquery-ui.custom.css" rel="stylesheet" />
+<link type="text/css" href="https://www.glowscript.org/css/ide.css" rel="stylesheet" />
+<script type="text/javascript" src="https://www.glowscript.org/lib/jquery/2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.glowscript.org/lib/jquery/2.1/jquery-ui.custom.min.js"></script>
+<script type="text/javascript" src="https://www.glowscript.org/package/glow.3.2.min.js"></script>
+<script type="text/javascript" src="https://www.glowscript.org/package/RSrun.3.2.min.js"></script>
+<script type="text/javascript"><!--//--><![CDATA[//><!--
+
+// START JAVASCRIPT
+;(function() {;
+var ρσ_modules = {};
+ρσ_modules.pythonize = {};
+
+(function(){
+    function strings() {
+        var string_funcs, exclude, name;
+        string_funcs = set("capitalize strip lstrip rstrip islower isupper isspace lower upper swapcase center count endswith startswith find rfind index rindex format join ljust rjust partition rpartition replace split rsplit splitlines zfill".split(" "));
+        if (!arguments.length) {
+            exclude = (function(){
+                var s = ρσ_set();
+                s.jsset.add("split");
+                s.jsset.add("replace");
+                return s;
+            })();
+        } else if (arguments[0]) {
+            exclude = Array.prototype.slice.call(arguments);
+        } else {
+            exclude = null;
+        }
+        if (exclude) {
+            string_funcs = string_funcs.difference(set(exclude));
+        }
+        var ρσ_Iter0 = string_funcs;
+        ρσ_Iter0 = ((typeof ρσ_Iter0[Symbol.iterator] === "function") ? (ρσ_Iter0 instanceof Map ? ρσ_Iter0.keys() : ρσ_Iter0) : Object.keys(ρσ_Iter0));
+        for (var ρσ_Index0 of ρσ_Iter0) {
+            name = ρσ_Index0;
+            (ρσ_expr_temp = String.prototype)[(typeof name === "number" && name < 0) ? ρσ_expr_temp.length + name : name] = (ρσ_expr_temp = ρσ_str.prototype)[(typeof name === "number" && name < 0) ? ρσ_expr_temp.length + name : name];
+        }
+    };
+    if (!strings.__module__) Object.defineProperties(strings, {
+        __module__ : {value: "pythonize"}
+    });
+
+    ρσ_modules.pythonize.strings = strings;
+})();
+async function __main__() {
+"use strict";
+    var display = canvas;
+    var scene = canvas();
+
+    function round(num, n=0) {return Number(num.toFixed(n))}
+
+    var version, print, arange, __name__, type, ρσ_ls, FPS, dt, t, m, x, y, v_x, v_y, a_x, a_y, v, a, f, running, block, v_arrow, a_arrow, ρσ_unpack, x_force_text, y_force_text, mass_text, xslider, yslider, mass_slider, F;
+    version = ρσ_list_decorate([ "3.2", "glowscript" ]);
+    Array.prototype['+'] = function(r) {return this.concat(r)}
+    Array.prototype['*'] = function(r) {return __array_times_number(this, r)}
+    window.__GSlang = "vpython";
+    print = GSprint;
+    arange = range;
+    __name__ = "__main__";
+    type = pytype;
+    var strings = ρσ_modules.pythonize.strings;
+
+    strings();
+    "4";
+    FPS = 60;
+    "5";
+    dt = 1["/"](FPS);
+    "6";
+    t = 0;
+    "8";
+    m = 5;
+    "14";
+    scene.width = 1e3;
+    "15";
+    scene.height = 500;
+    "16";
+    scene.title = "2D Force Simulation";
+    "17";
+    scene.background = color.white;
+    "19";
+    scene.userpan = true;
+    "20";
+    scene.userzoom = true;
+    "21";
+    scene.userspin = false;
+    "22";
+    scene.camera.pos = vector(0, 0, 10);
+    "23";
+    scene.range = 25;
+    "27";
+    x = ρσ_list_decorate([]);
+    "28";
+    y = ρσ_list_decorate([]);
+    "29";
+    v_x = ρσ_list_decorate([]);
+    "30";
+    v_y = ρσ_list_decorate([]);
+    "31";
+    a_x = ρσ_list_decorate([]);
+    "32";
+    a_y = ρσ_list_decorate([]);
+    "34";
+    v = vector(0, 1, 0);
+    "35";
+    a = vector(0, 0, 0);
+    "36";
+    f = vector(0, 0, 0);
+    "38";
+    running = true;
+    "44";
+    block = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vector(0, 0, 0), size: vector(3, 3, 0), color: color.black})]);
+    "50";
+    v_arrow = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: block.pos, axis: v, color: color.blue})]);
+    "56";
+    a_arrow = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: block.pos, axis: a, color: color.green})]);
+    "63";
+    ρσ_unpack = [0, 0, 0];
+    x_force_text = ρσ_unpack[0];
+    y_force_text = ρσ_unpack[1];
+    mass_text = ρσ_unpack[2];
+    "65";
+    async function change_force(evt) {
+        "66";
+        if ((evt.id === "x" || typeof evt.id === "object" && ρσ_equals(evt.id, "x"))) {
+            "67";
+            x_force_text.text = str(f.x)["+"](" N");
+            "68";
+        }
+        if ((evt.id === "y" || typeof evt.id === "object" && ρσ_equals(evt.id, "y"))) {
+            "69";
+            y_force_text.text = str(f.y)["+"](" N");
+        }
+    };
+    if (!change_force.__argnames__) Object.defineProperties(change_force, {
+        __argnames__ : {value: ["evt"]},
+        __module__ : {value: null}
+    });
+
+    "71";
+    scene.append_to_caption("X Force: ");
+    "72";
+    x_force_text = ρσ_interpolate_kwargs.call(this, wtext, [ρσ_desugar_kwargs({text: str(f.x)["+"](" N")})]);
+    "73";
+    xslider = ρσ_interpolate_kwargs.call(this, slider, [ρσ_desugar_kwargs({bind: change_force, max: 5, min: 1["-u"]()["*"](5), step: .1, value: f.x, id: "x"})]);
+    "74";
+    scene.append_to_caption("\n");
+    "76";
+    scene.append_to_caption("Y Force: ");
+    "77";
+    y_force_text = ρσ_interpolate_kwargs.call(this, wtext, [ρσ_desugar_kwargs({text: str(f.y)["+"](" N")})]);
+    "78";
+    yslider = ρσ_interpolate_kwargs.call(this, slider, [ρσ_desugar_kwargs({bind: change_force, max: 5, min: 1["-u"]()["*"](5), step: .1, value: f.y, id: "y"})]);
+    "79";
+    scene.append_to_caption("\n");
+    "81";
+    async function change_mass(evt) {
+        "82";
+        if ((evt.id === "m" || typeof evt.id === "object" && ρσ_equals(evt.id, "m"))) {
+            "83";
+            mass_text.text = str(m)["+"](" kg");
+        }
+    };
+    if (!change_mass.__argnames__) Object.defineProperties(change_mass, {
+        __argnames__ : {value: ["evt"]},
+        __module__ : {value: null}
+    });
+
+    "85";
+    scene.append_to_caption("Mass: ");
+    "86";
+    mass_text = ρσ_interpolate_kwargs.call(this, wtext, [ρσ_desugar_kwargs({text: str(m)["+"](" kg")})]);
+    "87";
+    mass_slider = ρσ_interpolate_kwargs.call(this, slider, [ρσ_desugar_kwargs({bind: change_mass, max: 50, min: .1, step: .01, value: m, id: "m"})]);
+    "88";
+    scene.append_to_caption("\n");
+    "92";
+    x.append(block.pos.x);
+    "93";
+    y.append(block.pos.y);
+    "95";
+    v_x.append(v.x);
+    "96";
+    v_y.append(v.y);
+    "98";
+    a_x.append(a.x);
+    "99";
+    a_y.append(a.y);
+    "101";
+    while (true) {
+        "102";
+        (await rate(FPS));
+        "105";
+        f.x = xslider.value;
+        "106";
+        f.y = yslider.value;
+        "108";
+        m = mass_slider.value;
+        "109";
+        console.log(m);
+        "112";
+        F = f;
+        "115";
+        a = F["/"](m);
+        "118";
+        v = v["+"](a["*"](dt));
+        "119";
+        block.pos = block.pos["+"](v["*"](dt));
+        "122";
+        x.append(block.pos.x);
+        "123";
+        y.append(block.pos.y);
+        "125";
+        v_x.append(v.x);
+        "126";
+        v_y.append(v.y);
+        "128";
+        a_x.append(a.x);
+        "129";
+        a_y.append(a.y);
+        "132";
+        v_arrow.pos = block.pos;
+        "133";
+        v_arrow.axis = norm(v)["*"](max(min(2["*"](v.mag), 15), 1));
+        "136";
+        a_arrow.pos = block.pos;
+        "137";
+        a_arrow.axis = norm(a)["*"](max(min(5["*"](a.mag), 15), 1));
+        "140";
+        t=t["+"](dt);
+    }
+};
+if (!__main__.__module__) Object.defineProperties(__main__, {
+    __module__ : {value: null}
+});
+
+;$(function(){ window.__context = { glowscript_container: $("#glowscript").removeAttr("id") }; __main__() })})()
+// END JAVASCRIPT
+
+//--><!]]></script>
+</div>
+</body>
+</html>
